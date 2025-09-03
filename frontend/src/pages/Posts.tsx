@@ -1,5 +1,20 @@
-import React from "react";
+import { useParams } from "react-router";
+import { useGetPostByUserId } from "@/api";
+import { Loader } from "@/components/ui/loader";
 
 export default function Posts() {
-  return <div>Posts</div>;
+  const params = useParams();
+
+  const { data, isLoading } = useGetPostByUserId(params.user_id as string);
+  console.log("data: ", data);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center min-h-screen mx-auto items-center w-full py-10">
+        <Loader />
+      </div>
+    );
+  }
+
+  return <div className="min-h-screen"></div>;
 }

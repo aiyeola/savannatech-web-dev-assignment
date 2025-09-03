@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Loader } from "@/components/ui/loader";
 import { useGetUsers } from "@/api";
 import {
@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -19,6 +18,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useNavigate } from "react-router";
+import { ROUTES } from "@/lib/routes";
 
 interface User {
   id: string;
@@ -34,6 +35,8 @@ interface User {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
+
   const [page, setPage] = useState(0);
   const [pageSize] = useState(4);
   const { data, isLoading } = useGetUsers(page, pageSize);
@@ -52,30 +55,36 @@ export default function Home() {
     <div className="max-w-4xl mx-auto p-4 h-screen">
       <p className="text-3xl font-semibold">Users</p>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Full Name</TableHead>
-            <TableHead>Email Address</TableHead>
-            <TableHead>Address</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <div className="flex justify-center mx-auto items-center w-full py-10">
-              <Loader />
-            </div>
-          ) : (
-            users.map((user: Record<string, string>) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-medium">{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.address}</TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+      <div className="overflow-hidden rounded-md border mt-5">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Full Name</TableHead>
+              <TableHead>Email Address</TableHead>
+              <TableHead>Address</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <div className="flex justify-center mx-auto items-center w-full py-10">
+                <Loader />
+              </div>
+            ) : (
+              users.map((user: Record<string, string>) => (
+                <TableRow
+                  key={user.id}
+                  className="hover:bg-gray-100 cursor-pointer"
+                  onClick={() => navigate(ROUTES.USER_POSTS(user.id))}
+                >
+                  <TableCell className="font-medium">{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.address}</TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
       <Pagination className="justify-end mt-4">
         <PaginationContent>

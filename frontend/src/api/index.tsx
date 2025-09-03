@@ -24,6 +24,7 @@ export const useGetPostByUserId = (userId: string) => {
         .catch((error) => {
           throw error.response.data;
         }),
+    enabled: !!userId,
   });
 };
 
