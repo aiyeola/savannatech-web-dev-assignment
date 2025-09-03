@@ -1,5 +1,4 @@
 import { connection } from "../connection";
-
 import {
   selectCountOfUsersTemplate,
   selectUsersTemplate,

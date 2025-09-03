@@ -12,8 +12,14 @@ router.get("/", async (req: Request, res: Response) => {
     return;
   }
 
-  const users = await getUsers(pageNumber, pageSize);
-  res.send(users);
+  try {
+    const users = await getUsers(pageNumber, pageSize);
+    const totalCount = await getUsersCount();
+    const totalPages = Math.ceil(totalCount / pageSize);
+    res.send({ users, pageNumber, pageSize, totalPages });
+  } catch (error) {
+    res.status(500).send({ message: "Failed to fetch users" });
+  }
 });
 
 router.get("/count", async (req: Request, res: Response) => {
