@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 
-import { getUsers, getUsersCount } from "../db/users/users";
+import { getUsers, getUsersCount, getUserById } from "../db/users/users";
 
 const router = Router();
 
@@ -25,6 +25,24 @@ router.get("/", async (req: Request, res: Response) => {
 router.get("/count", async (req: Request, res: Response) => {
   const count = await getUsersCount();
   res.send({ count });
+});
+
+router.get("/:id", async (req: Request, res: Response) => {
+  const userId = req.params.id;
+  if (!userId) {
+    res.status(400).send({ message: "Invalid user ID" });
+    return;
+  }
+  try {
+    const user = await getUserById(userId);
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res.status(404).send({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).send({ message: "Failed to fetch user" });
+  }
 });
 
 export default router;

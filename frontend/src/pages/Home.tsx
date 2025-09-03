@@ -47,7 +47,7 @@ export default function Home() {
       id: user.id,
       name: user.name,
       email: user.email,
-      address: `${user.street}, ${user.city}, ${user.state}, ${user.zipcode}`,
+      address: `${user.street}, ${user.state}, ${user.city}, ${user.zipcode}`,
     }));
   }, [data]);
 

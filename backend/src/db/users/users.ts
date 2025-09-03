@@ -34,3 +34,17 @@ export const getUsers = (
       }
     );
   });
+
+export const getUserById = (userId: string): Promise<User | undefined> =>
+  new Promise((resolve, reject) => {
+    connection.get<User>(
+      `SELECT * FROM users WHERE users.id = ?`,
+      [userId],
+      (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      }
+    );
+  });

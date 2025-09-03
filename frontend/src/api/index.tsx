@@ -14,6 +14,20 @@ export const useGetUsers = (pageNumber: number, pageSize: number) => {
   });
 };
 
+export const useGetUserbyId = (userId: string) => {
+  return useQuery({
+    queryKey: ["get_user_by_id", userId],
+    queryFn: ({ signal }) =>
+      request
+        .get(`/users/${userId}`, { signal })
+        .then((res) => res.data)
+        .catch((error) => {
+          throw error.response.data;
+        }),
+    enabled: Boolean(userId),
+  });
+};
+
 export const useGetPostByUserId = (userId: string) => {
   return useQuery({
     queryKey: ["get_posts_by_user", userId],
@@ -24,7 +38,7 @@ export const useGetPostByUserId = (userId: string) => {
         .catch((error) => {
           throw error.response.data;
         }),
-    enabled: !!userId,
+    enabled: Boolean(userId),
   });
 };
 

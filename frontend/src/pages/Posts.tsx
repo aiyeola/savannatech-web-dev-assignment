@@ -1,11 +1,13 @@
 import { useParams } from "react-router";
-import { useGetPostByUserId } from "@/api";
+import { useGetPostByUserId, useGetUserbyId } from "@/api";
 import { Loader } from "@/components/ui/loader";
 
 export default function Posts() {
   const params = useParams();
 
   const { data, isLoading } = useGetPostByUserId(params.user_id as string);
+  const { data: user } = useGetUserbyId(params.user_id as string);
+  console.log("user: ", user);
   console.log("data: ", data);
 
   if (isLoading) {
