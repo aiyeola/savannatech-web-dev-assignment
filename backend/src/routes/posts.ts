@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { deletePost, getPosts } from "../db/posts/posts";
+import { deletePost, getPosts, createPost } from "../db/posts/posts";
 
 const router = Router();
 
@@ -28,6 +28,31 @@ router.delete("/:id", async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).send({ error: "Failed to delete post" });
+  }
+});
+
+router.post("/", async (req: Request, res: Response) => {
+  const { userId, title, body } = req.body;
+  console.log("body: ", body);
+  console.log("title: ", title);
+  console.log("userId: ", userId);
+  if (!userId || typeof userId !== "string") {
+    res.status(400).send({ error: "Valid userId is required" });
+    return;
+  }
+  if (!title || typeof title !== "string" || title.trim() === "") {
+    res.status(400).send({ error: "title is required" });
+    return;
+  }
+  if (!body || typeof body !== "string" || body.trim() === "") {
+    res.status(400).send({ error: "body is required" });
+    return;
+  }
+  try {
+    const post = await createPost(userId, title, body);
+    res.status(201).send({ post, message: "Post created successfully" });
+  } catch (error) {
+    res.status(500).send({ error: "Failed to create post" });
   }
 });
 
