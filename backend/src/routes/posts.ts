@@ -33,9 +33,6 @@ router.delete("/:id", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
   const { userId, title, body } = req.body;
-  console.log("body: ", body);
-  console.log("title: ", title);
-  console.log("userId: ", userId);
   if (!userId || typeof userId !== "string") {
     res.status(400).send({ error: "Valid userId is required" });
     return;
