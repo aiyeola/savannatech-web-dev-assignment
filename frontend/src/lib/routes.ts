@@ -1,4 +1,4 @@
 export const ROUTES = {
   HOME: "/",
-  SIGN_IN: "/sign-in",
+  USER_POSTS: (userId: string) => `/user/${userId}/posts`,
 };

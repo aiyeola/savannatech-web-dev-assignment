@@ -11,7 +11,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route index element={<Home />} />
-        <Route path="/users/:user_id/posts" element={<Posts />} />
+        <Route path="/user/:user_id/posts" element={<Posts />} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
