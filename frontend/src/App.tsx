@@ -1,10 +1,20 @@
-import { Loader } from "@/components/ui/loader";
+import { Routes, Route } from "react-router";
+import Home from "@/pages/Home";
+import Posts from "@/pages/Posts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="text-red-600">
-      <Loader />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="/users/:user_id/posts" element={<Posts />} />
+      </Routes>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
