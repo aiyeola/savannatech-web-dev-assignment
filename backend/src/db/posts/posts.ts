@@ -11,3 +11,18 @@ export const getPosts = (userId: string): Promise<Post[]> =>
       resolve(results as Post[]);
     });
   });
+
+export const deletePost = (postId: string): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    connection.run(
+      "DELETE FROM posts WHERE id = ?",
+      [postId],
+      function (error) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(this.changes > 0);
+        }
+      }
+    );
+  });
