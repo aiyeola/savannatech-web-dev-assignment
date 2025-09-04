@@ -42,7 +42,7 @@ npm run dev
 
 ### Accessing the Application
 
-- Browswer should open and navigate to `http://localhost:5173` to use the web UI.
+- Browser should open and navigate to `http://localhost:5173` to use the web UI.
 - Ensure the backend server is running for API requests to work.
 
 ### Additional Notes
