@@ -90,7 +90,11 @@ export default function Home() {
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              onClick={() => setPage(data?.pageNumber - 1)}
+              onClick={
+                data?.pageNumber === 0
+                  ? undefined
+                  : () => setPage(data?.pageNumber - 1)
+              }
               aria-disabled={data?.pageNumber === 0}
             />
           </PaginationItem>
@@ -172,7 +176,11 @@ export default function Home() {
           )}
           <PaginationItem>
             <PaginationNext
-              onClick={() => setPage(data?.pageNumber + 1)}
+              onClick={
+                data?.pageNumber === data?.totalPages - 1
+                  ? undefined
+                  : () => setPage(data?.pageNumber + 1)
+              }
               aria-disabled={data?.pageNumber === data?.totalPages - 1}
             />
           </PaginationItem>
