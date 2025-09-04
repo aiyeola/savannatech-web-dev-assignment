@@ -67,7 +67,7 @@ export const useCreatePost = () => {
   });
 };
 
-export const useDeletePost = () => {
+export const useDeletePost = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -78,9 +78,9 @@ export const useDeletePost = () => {
         .catch((error) => {
           throw error.response.data;
         }),
-    onSuccess: ({ variables }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["get_posts_by_user", variables.userId],
+        queryKey: ["get_posts_by_user", userId],
       });
     },
   });

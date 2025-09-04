@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router";
 import { useGetPostByUserId, useGetUserbyId } from "@/api";
 import { Loader } from "@/components/ui/loader";
-import { ArrowLeft, Trash2Icon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import AddNewPost from "@/components/AddNewPost";
+import DeletePost from "@/components/DeletePost";
 
 export default function Posts() {
   const params = useParams();
@@ -12,7 +13,6 @@ export default function Posts() {
     params.user_id as string
   );
   const { data: user } = useGetUserbyId(params.user_id as string);
-  console.log("data: ", posts);
 
   if (isLoading) {
     return (
@@ -50,18 +50,12 @@ export default function Posts() {
       </div>
       <div className="grid grid-cols-3 gap-4 mt-6">
         <AddNewPost />
-        {posts?.map((post) => (
+        {posts?.map((post: Record<string, string>) => (
           <div
             key={post.id}
             className="border rounded-lg p-4 flex flex-col justify-between"
           >
-            <button
-              className="self-end text-red-400 cursor-pointer hover:text-red-700"
-              onClick={() => {}}
-              title="Delete Post"
-            >
-              <Trash2Icon className="size-4" />
-            </button>
+            <DeletePost postId={post.id} />
             <h2 className="text-lg font-medium mb-2 text-gray-600">
               {post.title}
             </h2>

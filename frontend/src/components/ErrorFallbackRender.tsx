@@ -1,7 +1,12 @@
-import React from "react";
+type ErrorFallbackRenderProps = {
+  error: Error;
+  resetErrorBoundary: () => void;
+};
 
-export default function ErrorFallbackRender({ error, resetErrorBoundary }) {
-  console.log("error: ", error);
+export default function ErrorFallbackRender({
+  error,
+  resetErrorBoundary,
+}: ErrorFallbackRenderProps) {
   return (
     <div>
       <p>Error: {error.message}</p>

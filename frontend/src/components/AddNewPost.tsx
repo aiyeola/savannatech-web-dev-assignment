@@ -42,13 +42,16 @@ export default function AddNewPost() {
 
   const onSubmit = async (data: PostFormValues) => {
     try {
-      await createPost({
+      const response = await createPost({
         ...data,
         userId: params?.user_id as string,
       });
-      toast.success("Post created successfully");
-      reset();
-      setOpen(false);
+
+      if (response) {
+        toast.success(response?.message);
+        reset();
+        setOpen(false);
+      }
     } catch (error) {
       if (error) {
         const errorMessage =
