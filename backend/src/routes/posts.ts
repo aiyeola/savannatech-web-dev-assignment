@@ -10,6 +10,7 @@ router.get("/", async (req: Request, res: Response) => {
     return;
   }
   const posts = await getPosts(userId);
+  res.send(posts);
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
