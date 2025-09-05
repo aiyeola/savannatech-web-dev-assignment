@@ -34,7 +34,7 @@ RUN addgroup -g 1001 -S nodejs && \
 RUN mkdir -p /app/data /app/logs && chown -R nodejs:nodejs /app/data /app/logs
 
 # Copy database and set ownership to nodejs user
-# COPY --chown=nodejs:nodejs data.db ./data.db
+COPY --chown=nodejs:nodejs ./data/data.db ./app/data/data.db
 
 # Switch to non-root user
 USER nodejs
