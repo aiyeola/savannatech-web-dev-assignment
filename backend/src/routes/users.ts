@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 
 import { getUsers, getUsersCount, getUserById } from "../db/users/users";
+import { errorLogger } from "../utils/errorLogger";
 
 const router = Router();
 
@@ -66,7 +67,7 @@ router.get("/", async (req: Request, res: Response) => {
     const totalPages = Math.ceil(totalCount / pageSize);
     res.send({ users, pageNumber, pageSize, totalPages });
   } catch (error) {
-    res.status(500).send({ message: "Failed to fetch users" });
+    errorLogger.logAndRespond(req, res, error as Error, 500, "Failed to fetch users");
   }
 });
 
@@ -91,8 +92,12 @@ router.get("/", async (req: Request, res: Response) => {
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get("/count", async (req: Request, res: Response) => {
-  const count = await getUsersCount();
-  res.send({ count });
+  try {
+    const count = await getUsersCount();
+    res.send({ count });
+  } catch (error) {
+    errorLogger.logAndRespond(req, res, error as Error, 500, "Failed to fetch user count");
+  }
 });
 
 /**
@@ -148,7 +153,7 @@ router.get("/:id", async (req: Request, res: Response) => {
       res.status(404).send({ message: "User not found" });
     }
   } catch (error) {
-    res.status(500).send({ message: "Failed to fetch user" });
+    errorLogger.logAndRespond(req, res, error as Error, 500, "Failed to fetch user");
   }
 });
 

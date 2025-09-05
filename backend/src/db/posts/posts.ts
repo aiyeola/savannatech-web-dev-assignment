@@ -1,5 +1,5 @@
 import { connection } from "../connection";
-import { selectPostsTemplate } from "./query-tamplates";
+import { selectPostsTemplate } from "./query-templates";
 import { Post } from "./types";
 import { v4 as uuidv4 } from "uuid";
 

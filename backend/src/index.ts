@@ -3,6 +3,7 @@ import config from "config";
 import postsRouter from "./routes/posts";
 import usersRouter from "./routes/users";
 import { swaggerUi, specs } from "./swagger";
+import { errorLogger } from "./utils/errorLogger";
 const port = config.get("port") as number;
 
 const app: Application = express();
@@ -23,6 +24,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
+
+// Global error handling middleware
+app.use(errorLogger.middleware());
 
 app.listen(port, () => {
   console.log(`API server is running on port ${port}`);

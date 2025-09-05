@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { deletePost, getPosts, createPost } from "../db/posts/posts";
+import { errorLogger } from "../utils/errorLogger";
 
 const router = Router();
 
@@ -51,8 +52,13 @@ router.get("/", async (req: Request, res: Response) => {
     res.status(400).send({ error: "userId is required" });
     return;
   }
-  const posts = await getPosts(userId);
-  res.send(posts);
+  
+  try {
+    const posts = await getPosts(userId);
+    res.send(posts);
+  } catch (error) {
+    errorLogger.logAndRespond(req, res, error as Error, 500, "Failed to fetch posts");
+  }
 });
 
 /**
@@ -112,7 +118,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
       res.status(404).send({ error: "Post not found" });
     }
   } catch (error) {
-    res.status(500).send({ error: "Failed to delete post" });
+    errorLogger.logAndRespond(req, res, error as Error, 500, "Failed to delete post");
   }
 });
 
@@ -166,7 +172,7 @@ router.post("/", async (req: Request, res: Response) => {
     const post = await createPost(userId, title, body);
     res.status(201).send({ post, message: "Post created successfully" });
   } catch (error) {
-    res.status(500).send({ error: "Failed to create post" });
+    errorLogger.logAndRespond(req, res, error as Error, 500, "Failed to create post");
   }
 });
 
