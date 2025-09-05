@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import config from "config";
 import postsRouter from "./routes/posts";
 import usersRouter from "./routes/users";
+import { swaggerUi, specs } from "./swagger";
 const port = config.get("port") as number;
 
 const app: Application = express();
@@ -17,6 +18,8 @@ app.use((_req, res, next) => {
   );
   next();
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);

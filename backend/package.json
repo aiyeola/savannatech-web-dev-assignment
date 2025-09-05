@@ -6,17 +6,27 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "config": "^3.3.12",
     "express": "^4.21.1",
     "nodemon": "^3.1.7",
     "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0"
   },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon",
-    "dev:once": "ts-node src/index.ts"
+    "dev:once": "ts-node src/index.ts",
+    "docker:build": "docker build -t users-posts-backend .",
+    "docker:run": "docker run -p 3001:3001 users-posts-backend",
+    "docker:compose:up": "docker-compose up -d",
+    "docker:compose:down": "docker-compose down",
+    "docker:compose:logs": "docker-compose logs -f",
+    "docker:compose:build": "docker-compose up --build -d"
   },
   "devDependencies": {
     "@types/config": "^3.3.5",
