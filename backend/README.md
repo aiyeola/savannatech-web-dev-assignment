@@ -56,7 +56,11 @@ npm run dev:once
 
 The API includes comprehensive Swagger UI documentation available at:
 
+### Development Environment
 **http://localhost:3001/api-docs**
+
+### Production Environment
+**https://savannatech-web-dev-assignment-production.up.railway.app/api-docs**
 
 ### Available Endpoints
 
@@ -72,6 +76,10 @@ The API includes comprehensive Swagger UI documentation available at:
 
 ## Docker Deployment
 
+The application supports containerized deployment using Docker and Docker Compose. The setup is defined in:
+- **`Dockerfile`** - Multi-stage Docker image build configuration
+- **`docker-compose.yml`** - Service orchestration and environment setup
+
 ### Quick Start with Docker Compose
 
 1. **Build and start the application:**
@@ -82,6 +90,8 @@ The API includes comprehensive Swagger UI documentation available at:
 2. **Access the application:**
    - API: http://localhost:3001
    - Swagger UI: http://localhost:3001/api-docs
+   - Production API: https://savannatech-web-dev-assignment-production.up.railway.app
+   - Production Swagger UI: https://savannatech-web-dev-assignment-production.up.railway.app/api-docs
 
 3. **View logs:**
    ```bash
@@ -92,6 +102,23 @@ The API includes comprehensive Swagger UI documentation available at:
    ```bash
    npm run docker:compose:down
    ```
+
+### Docker Configuration Files
+
+#### Dockerfile Features
+- **Base Image**: Node.js 18 Alpine
+- **Multi-stage Build**: Optimized production image
+- **Security**: Non-root user execution
+- **Health Check**: Configurable endpoint monitoring
+- **Environment Variables**: `PROD_URL`, `HEALTH_CHECK_BASE_URL`
+
+#### docker-compose.yml Features
+- **Service Name**: `users-posts-backend`
+- **Container Name**: `users-posts-api`
+- **Port Mapping**: 3001:3001
+- **Volume Mounts**: Database persistence (`./data:/app/data`)
+- **Health Monitoring**: Built-in health checks with wget
+- **Environment**: Production mode with configurable health check URL
 
 ### Docker Commands
 
@@ -156,8 +183,28 @@ The application uses the `config` package for environment-specific settings:
 
 ## Health Checks
 
-The Docker setup includes health checks that verify the API is responding:
-- Endpoint: `GET /users/count`
-- Interval: 30 seconds
-- Timeout: 10 seconds
-- Start period: 40 seconds
+The Docker setup includes configurable health checks that verify the API is responding:
+
+### Configuration
+- **Base URL**: Configurable via `HEALTH_CHECK_BASE_URL` environment variable
+- **Default**: `http://localhost:3001`
+- **Endpoint**: `/users/count`
+- **Full URL**: `${HEALTH_CHECK_BASE_URL}/users/count`
+
+### Health Check Settings
+- **Interval**: 30 seconds
+- **Timeout**: 10 seconds (docker-compose) / 3 seconds (Dockerfile)
+- **Start period**: 40 seconds (docker-compose) / 5 seconds (Dockerfile)
+- **Retries**: 3
+
+### Environment Variable
+Set `HEALTH_CHECK_BASE_URL` to customize the base URL for health checks:
+
+```bash
+# In docker-compose.yml
+environment:
+  - HEALTH_CHECK_BASE_URL=https://myapp.com
+
+# Or when running Docker directly
+docker run -e HEALTH_CHECK_BASE_URL=https://myapp.com -p 3001:3001 users-posts-backend
+```

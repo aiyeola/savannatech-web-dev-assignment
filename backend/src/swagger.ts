@@ -17,6 +17,10 @@ const options = {
         url: `http://localhost:${port}`,
         description: 'Development server',
       },
+      {
+        url: 'https://savannatech-web-dev-assignment-production.up.railway.app',
+        description: 'Production server',
+      },
     ],
     components: {
       schemas: {
