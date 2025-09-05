@@ -18,7 +18,6 @@ RUN npm ci
 
 # Copy source code
 COPY src/ ./src/
-COPY data.db ./data.db
 COPY config/ ./config/
 
 # Build the application
@@ -33,6 +32,9 @@ RUN addgroup -g 1001 -S nodejs && \
 
 # Create data and logs directories and set permissions
 RUN mkdir -p /app/data /app/logs && chown -R nodejs:nodejs /app/data /app/logs
+
+# Copy database and set ownership to nodejs user
+COPY --chown=nodejs:nodejs data.db ./data.db
 
 # Switch to non-root user
 USER nodejs
