@@ -18,10 +18,15 @@ class ErrorLogger {
 
   constructor() {
     const logDir = path.join(process.cwd(), 'logs');
-    if (!fs.existsSync(logDir)) {
-      fs.mkdirSync(logDir, { recursive: true });
+    try {
+      if (!fs.existsSync(logDir)) {
+        fs.mkdirSync(logDir, { recursive: true });
+      }
+      this.logFilePath = path.join(logDir, 'error.log');
+    } catch (error) {
+      console.warn('Unable to create logs directory, falling back to console-only logging:', error instanceof Error ? error.message : error);
+      this.logFilePath = '';
     }
-    this.logFilePath = path.join(logDir, 'error.log');
   }
 
   private formatLogEntry(entry: ErrorLogEntry): string {
@@ -50,12 +55,14 @@ class ErrorLogger {
       console.error(stack);
     }
 
-    // Log to file
-    try {
-      const logString = this.formatLogEntry(logEntry);
-      fs.appendFileSync(this.logFilePath, logString);
-    } catch (fileError) {
-      console.error('Failed to write to log file:', fileError);
+    // Log to file (only if logFilePath is available)
+    if (this.logFilePath) {
+      try {
+        const logString = this.formatLogEntry(logEntry);
+        fs.appendFileSync(this.logFilePath, logString);
+      } catch (fileError) {
+        console.error('Failed to write to log file:', fileError);
+      }
     }
   }
 

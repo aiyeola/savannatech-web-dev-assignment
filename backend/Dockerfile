@@ -31,8 +31,8 @@ RUN npm ci --only=production && npm cache clean --force
 RUN addgroup -g 1001 -S nodejs && \
   adduser -S nodejs -u 1001
 
-# Create data directory and set permissions
-RUN mkdir -p /app/data && chown nodejs:nodejs /app/data
+# Create data and logs directories and set permissions
+RUN mkdir -p /app/data /app/logs && chown -R nodejs:nodejs /app/data /app/logs
 
 # Switch to non-root user
 USER nodejs
