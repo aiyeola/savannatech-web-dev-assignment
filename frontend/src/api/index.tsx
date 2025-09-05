@@ -1,4 +1,9 @@
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useQuery,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import { request } from "@/api/config";
 
 export const useGetUsers = (pageNumber: number, pageSize: number) => {
@@ -11,6 +16,7 @@ export const useGetUsers = (pageNumber: number, pageSize: number) => {
         .catch((error) => {
           throw error.response.data;
         }),
+    placeholderData: keepPreviousData,
   });
 };
 
