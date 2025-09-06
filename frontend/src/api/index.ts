@@ -65,7 +65,8 @@ export const useCreatePost = () => {
         .catch((error) => {
           throw error.response.data;
         }),
-    onSuccess: (variables) => {
+    onSuccess: (_, variables) => {
+      console.log("variables: ", variables);
       queryClient.invalidateQueries({
         queryKey: ["get_posts_by_user", variables?.userId],
       });
