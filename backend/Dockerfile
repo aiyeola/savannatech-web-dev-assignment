@@ -36,7 +36,10 @@ RUN mkdir -p /app/data /app/logs && \
   chmod -R 770 /app/data /app/logs
 
 # Copy database and set ownership to nodejs user
-COPY --chown=nodejs:nodejs ./data/data.db ./app/data/data.db
+COPY --chown=nodejs:nodejs ./data/data.db /app/data/data.db
+
+# Ensure database file has proper read/write permissions
+RUN chmod 660 /app/data/data.db
 
 # Switch to non-root user
 USER nodejs
