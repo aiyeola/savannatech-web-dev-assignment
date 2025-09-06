@@ -64,16 +64,20 @@ export default function Home() {
               <TableHead>Address</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="relative min-h-[200px] h-full">
             {isLoading ? (
-              <div className="flex justify-center mx-auto items-center w-full py-10">
-                <Loader />
-              </div>
+              <TableRow>
+                <TableCell colSpan={3} className="h-[200px]">
+                  <div className="flex justify-center items-center h-full">
+                    <Loader />
+                  </div>
+                </TableCell>
+              </TableRow>
             ) : (
               users.map((user: Record<string, string>) => (
                 <TableRow
                   key={user.id}
-                  className="hover:bg-gray-100 cursor-pointer"
+                  className="hover:bg-gray-100 cursor-pointer h-20"
                   onClick={() => navigate(ROUTES.USER_POSTS(user.id))}
                 >
                   <TableCell className="font-medium">{user.name}</TableCell>
