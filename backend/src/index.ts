@@ -4,10 +4,12 @@ import postsRouter from "./routes/posts";
 import usersRouter from "./routes/users";
 import { swaggerUi, specs } from "./swagger";
 import { errorLogger } from "./utils/errorLogger";
+import cors from "cors";
 const port = config.get("port") as number;
 
 const app: Application = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use((_req, res, next) => {
