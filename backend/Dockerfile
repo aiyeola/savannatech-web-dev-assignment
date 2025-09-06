@@ -30,8 +30,10 @@ RUN npm ci --only=production && npm cache clean --force
 RUN addgroup -g 1001 -S nodejs && \
   adduser -S nodejs -u 1001
 
-# Create data and logs directories and set permissions
-RUN mkdir -p /app/data /app/logs && chown -R nodejs:nodejs /app/data /app/logs
+# Create data and logs directories, set ownership and read/write permissions
+RUN mkdir -p /app/data /app/logs && \
+  chown -R nodejs:nodejs /app/data /app/logs && \
+  chmod -R 770 /app/data /app/logs
 
 # Copy database and set ownership to nodejs user
 COPY --chown=nodejs:nodejs ./data/data.db ./app/data/data.db
