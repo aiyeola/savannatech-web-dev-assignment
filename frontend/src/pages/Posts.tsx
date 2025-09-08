@@ -3,7 +3,9 @@ import { useGetPostByUserId, useGetUserbyId } from "@/api";
 import { Loader } from "@/components/ui/loader";
 import { ArrowLeft } from "lucide-react";
 import AddNewPost from "@/components/AddNewPost";
-import DeletePost from "@/components/DeletePost";
+import PostCard from "@/components/PostCard";
+import { useMemo, useCallback } from "react";
+import { Post } from "@/types";
 
 export default function Posts() {
   const params = useParams();
@@ -14,6 +16,19 @@ export default function Posts() {
   );
   const { data: user } = useGetUserbyId(params.user_id as string);
 
+  const sortedPosts = useMemo<Post[]>(() => {
+    if (!posts) return [];
+    return [...posts].sort((a: Post, b: Post) => {
+      const dateA = new Date(a.created_at || a.updatedAt || '').getTime();
+      const dateB = new Date(b.created_at || b.updatedAt || '').getTime();
+      return dateB - dateA;
+    });
+  }, [posts]);
+
+  const handleBackClick = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
   if (isLoading) {
     return (
       <div className="flex justify-center min-h-screen mx-auto items-center w-full py-10">
@@ -23,46 +38,35 @@ export default function Posts() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 min-h-screen space-y-5">
+    <div className="max-w-4xl mx-auto p-6 min-h-screen space-y-6 pt-8">
       <div
-        className="flex items-center text-sm cursor-pointer text-[#535862]"
-        onClick={() => navigate(-1)}
+        className="flex items-center text-sm cursor-pointer text-gray-600 hover:text-gray-800 transition-colors mb-2"
+        onClick={handleBackClick}
       >
-        <ArrowLeft className="mr-2 size-5" />
+        <ArrowLeft className="mr-2 size-4" />
         <span>Back to Users</span>
       </div>
-      <div>
-        <h1 className="text-2xl font-bold text-[#181D27]">{user?.name}</h1>
-        <div className="flex gap-x-1">
-          <p>{user?.email}</p>
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold text-gray-900">{user?.name}</h1>
+        <div className="flex items-center gap-x-1 text-gray-600">
+          <p className="text-sm">{user?.email}</p>
           <svg
             width="4"
             height="4"
             viewBox="0 0 4 4"
-            className="mx-2 my-auto"
+            className="mx-2 my-auto text-gray-400"
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
           >
             <circle cx="2" cy="2" r="2" />
           </svg>
-          <p>{posts?.length} Posts</p>
+          <p className="text-sm">{sortedPosts?.length} Posts</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
         <AddNewPost />
-        {posts?.map((post: Record<string, string>) => (
-          <div
-            key={post.id}
-            className="border rounded-lg p-4 flex flex-col justify-between"
-          >
-            <DeletePost postId={post.id} />
-            <h2 className="text-lg font-medium mb-2 text-gray-600">
-              {post.title}
-            </h2>
-            <p className="flex-1 text-gray-700 mb-4 line-clamp-7">
-              {post.body}
-            </p>
-          </div>
+        {sortedPosts?.map((post: Post) => (
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
     </div>

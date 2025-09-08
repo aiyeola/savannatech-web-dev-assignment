@@ -5,9 +5,10 @@ import {
   keepPreviousData,
 } from "@tanstack/react-query";
 import { request } from "@/api/config";
+import { User, Post, CreatePostData, PaginatedResponse, ApiResponse } from "@/types";
 
 export const useGetUsers = (pageNumber: number, pageSize: number) => {
-  return useQuery({
+  return useQuery<PaginatedResponse<User>>({
     queryKey: ["get_users", pageNumber, pageSize],
     queryFn: ({ signal }) =>
       request
@@ -21,7 +22,7 @@ export const useGetUsers = (pageNumber: number, pageSize: number) => {
 };
 
 export const useGetUserbyId = (userId: string) => {
-  return useQuery({
+  return useQuery<User>({
     queryKey: ["get_user_by_id", userId],
     queryFn: ({ signal }) =>
       request
@@ -35,7 +36,7 @@ export const useGetUserbyId = (userId: string) => {
 };
 
 export const useGetPostByUserId = (userId: string) => {
-  return useQuery({
+  return useQuery<Post[]>({
     queryKey: ["get_posts_by_user", userId],
     queryFn: ({ signal }) =>
       request
@@ -48,17 +49,11 @@ export const useGetPostByUserId = (userId: string) => {
   });
 };
 
-interface CreatePost {
-  userId: string;
-  title: string;
-  body: string;
-}
-
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (values: CreatePost) =>
+  return useMutation<ApiResponse, Error, CreatePostData>({
+    mutationFn: (values: CreatePostData) =>
       request
         .post(`/posts`, values)
         .then((res) => res.data)
@@ -66,7 +61,6 @@ export const useCreatePost = () => {
           throw error.response.data;
         }),
     onSuccess: (_, variables) => {
-      console.log("variables: ", variables);
       queryClient.invalidateQueries({
         queryKey: ["get_posts_by_user", variables?.userId],
       });
@@ -77,7 +71,7 @@ export const useCreatePost = () => {
 export const useDeletePost = (userId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<ApiResponse, Error, string>({
     mutationFn: (postId: string) =>
       request
         .delete(`/posts/${postId}`)
