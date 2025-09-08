@@ -19,8 +19,8 @@ export default function Posts() {
   const sortedPosts = useMemo<Post[]>(() => {
     if (!posts) return [];
     return [...posts].sort((a: Post, b: Post) => {
-      const dateA = new Date(a.created_at || a.updatedAt || '').getTime();
-      const dateB = new Date(b.created_at || b.updatedAt || '').getTime();
+      const dateA = new Date(a.created_at || a.updatedAt || "").getTime();
+      const dateB = new Date(b.created_at || b.updatedAt || "").getTime();
       return dateB - dateA;
     });
   }, [posts]);
@@ -38,7 +38,7 @@ export default function Posts() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 min-h-screen space-y-6 pt-8">
+    <div className="max-w-4xl mx-auto p-6 min-h-screen space-y-6 py-12">
       <div
         className="flex items-center text-sm cursor-pointer text-gray-600 hover:text-gray-800 transition-colors mb-2"
         onClick={handleBackClick}

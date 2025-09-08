@@ -49,7 +49,7 @@ export default function DeletePost({ postId }: DeletePostProps) {
   return (
     <>
       <button
-        className="self-end text-red-400 cursor-pointer hover:text-red-700"
+        className="text-red-400 cursor-pointer hover:text-red-700"
         onClick={handleDeleteClick}
         title="Delete Post"
       >

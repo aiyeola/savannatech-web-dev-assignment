@@ -87,8 +87,8 @@ export default function AddNewPost() {
         </div>
       </DialogTrigger>
       <DialogContent className="max-h-[80vh] overflow-hidden">
-        <DialogHeader>New Post</DialogHeader>
-        <div className="h-96 overflow-y-auto pr-2">
+        <DialogHeader className="font-semibold">New Post</DialogHeader>
+        <div className="h-auto overflow-y-auto pr-2">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="relative">
               <div className="flex justify-between items-center mb-2">

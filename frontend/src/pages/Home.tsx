@@ -35,7 +35,7 @@ export default function Home() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto p-6 min-h-screen pt-8">
+    <div className="max-w-4xl mx-auto p-6 min-h-screen py-12">
       <h1 className="text-3xl font-semibold mb-8 text-gray-900">Users</h1>
 
       <UserTable
