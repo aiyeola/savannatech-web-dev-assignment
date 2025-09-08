@@ -218,29 +218,6 @@ Tests are built with Jest and React Testing Library, covering:
 - **CORS** - Cross-origin resource sharing
 - **UUID** - Unique identifier generation
 
-## 🔐 Features
-
-### Frontend Features
-
-- **User Management** - View and browse users with pagination
-- **Post Management** - Create, view, and delete posts
-- **Responsive Design** - Mobile-first approach with TailwindCSS
-- **Dark Mode** - Theme switching capability
-- **Error Handling** - Comprehensive error boundaries
-- **Loading States** - Skeleton loading and spinners
-- **Form Validation** - Client-side validation with Zod
-- **Toast Notifications** - User feedback system
-
-### Backend Features
-
-- **RESTful API** - Clean and consistent API design
-- **Data Persistence** - SQLite database with volume mounting
-- **API Documentation** - Interactive Swagger UI
-- **CORS Support** - Cross-origin request handling
-- **Error Handling** - Structured error responses
-- **Docker Support** - Containerized deployment
-- **Health Checks** - Application monitoring
-
 ## 🚀 Deployment Options
 
 ### Development
